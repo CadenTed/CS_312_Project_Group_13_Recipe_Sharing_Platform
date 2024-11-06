@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function RecipeCard({ src }) {
   return (
-    <div className="card" style={{ width: "18rem" }}>
+    <Link to="/display-recipe" className="card" style={{ width: "18rem" }}>
       <img
         src={src}
         height="150px"
@@ -16,7 +17,7 @@ function RecipeCard({ src }) {
         <h5 className="card-title">Recipe Name</h5>
         <p className="card-text">DESCRIPTION HERE</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
