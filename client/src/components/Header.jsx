@@ -11,12 +11,12 @@ const Header = () => {
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img
-            src={`${process.env.PUBLIC_URL}/egg-fried.svg`}
-            height="30"
+            src={`${process.env.PUBLIC_URL}/savorly-logo.png`}
+            height="50"
             alt=""
             className="me-1"
           />
-          Savorly
+          <strong>Savorly</strong>
         </Link>
       </div>
     </nav>
