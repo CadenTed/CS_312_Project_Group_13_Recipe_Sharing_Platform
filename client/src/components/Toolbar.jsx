@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 const Toolbar = () => {
   return (
@@ -16,7 +17,9 @@ const Toolbar = () => {
       <button className="btn btn-secondary ms-2">Filter</button>
 
       {/* Create Recipe Button */}
-      <button className="btn btn-primary ms-2">Create Recipe</button>
+      <Link to="/add-recipe" className="btn btn-primary ms-2">
+        Create Recipe
+      </Link>
 
       {/* Avatar */}
       <div style={styles.avatar} className="ms-2">
