@@ -7,6 +7,8 @@ import { fileURLToPath } from "url";
 const app = express();
 const port = 5001;
 
+let idToDisplay;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -30,6 +32,44 @@ const recipes = [
   },
 ];
 
+const recipeInfo = [
+  {
+    id: 0,
+    ingredients: [
+      "1/2 lb Ground Beef",
+      "1 Hamburger Bun",
+      "1 slice of Cheese",
+      "Lettuce",
+      "Tomato",
+      "Pickles",
+    ],
+    steps: [
+      "Form the beef into a patty",
+      "Season the patty with salt and pepper",
+      "Cook the patty on a grill or stovetop",
+      "Assemble the burger with your desired toppings",
+    ],
+    cookware: ["Grill", "Spatula"],
+  },
+  {
+    id: 1,
+    ingredients: [
+      "1 Salmon Fillet",
+      "1 cup of Mixed Vegetables",
+      "1 cup of Rice",
+      "Salt",
+      "Pepper",
+    ],
+    steps: [
+      "Season the salmon fillet with salt and pepper",
+      "Fry the salmon in a pan until crispy",
+      "Steam the mixed vegetables",
+      "Cook the rice",
+    ],
+    cookware: ["Pan", "Pot", "Steamer"],
+  },
+];
+
 app.get("/api", (req, res) => {
   res.send("Hello World");
 });
@@ -38,6 +78,21 @@ app.get("/api/recipes", (req, res) => {
   res.json(recipes);
 });
 
+app.post("/api/recipe-id", (req, res) => {
+  setIdToDisplay(req.body.id);
+});
+
+app.get("/api/recipe-info", (req, res) => {
+  const id = idToDisplay;
+  const recipe = recipeInfo.find((recipe) => recipe.id == id);
+  console.log(recipe);
+  res.json(recipe);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+const setIdToDisplay = (id) => {
+  idToDisplay = id;
+};

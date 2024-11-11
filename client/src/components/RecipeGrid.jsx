@@ -40,7 +40,6 @@ const styles = {
     gap: "20px",
     padding: "20px",
     justifyContent: "center",
-    justifyContent: "center",
     width: "100%",
     maxWidth: "1200px", // Adjust as needed
     margin: "0 auto",

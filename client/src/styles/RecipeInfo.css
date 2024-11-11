@@ -1,0 +1,32 @@
+.table-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.recipe-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.recipe-table th,
+.recipe-table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.recipe-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.recipe-table tbody tr:nth-child(even) {
+  background-color: #e9e9e9;
+}
+
+.instructions {
+  max-width: 1300px !important;
+}

@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 // import './Header.css'; // Import the custom CSS file
 
 const Header = () => {
-  const isSignedIn = false;
-
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">

@@ -1,5 +1,4 @@
 import React from "react";
-import Avatar from "./Avatar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function CreatorInfo() {
