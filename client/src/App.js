@@ -15,7 +15,7 @@ function App() {
       <Header />
       <div className="App">
         <Routes>
-          <Route path="/" element={ UserProfile.getName() === null ? <Login /> : <Home />} />
+          <Route path="/" element={ UserProfile.getName() === "" ? <Login /> : <Home />} />
           <Route path="/add-recipe" element={<MakeRecipe />} />
           <Route path="/display-recipe" element={<DisplayRecipe />} />
           <Route path="/logout"  element={() => { UserProfile.setName(""); return(<Login />);} }/>

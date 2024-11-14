@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "./UserProfile";
-import "./styles/Login.css"
+//import "./styles/Login.css"
 
 function Login({ onLogin }) {
     const [userId, setUserId] = useState('');
