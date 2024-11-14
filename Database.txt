@@ -1,0 +1,47 @@
+Server host/address: localhost
+Port: 5432
+Username: postgres
+Password: Dependent on user
+
+Database Name: RecipeBase
+
+Tables
+   - Users:
+      * userId serial not NULL Primary Key
+      * username character varying 255 Not NULL
+      * password character varying 255 Not NULL
+      * email text Not NULL
+      * firstName text Not NULL
+      * lastName text
+      * profilePicPath text
+      * birthday date Not NULL
+
+   - Recipes
+      * recipeId serial not NULL Primary Key
+      * recipe_user_id serial not NULL Foreign Key
+      * dateCreated date not NULL
+      * name character varying 255 Not NULL
+      * description text
+      * prepTime int
+      * cookTime int
+      * servings double
+
+   - Ratings
+      * ratingId serial not NULL Primary Key
+      * recipeId serial not NULL Foreign Key
+      * userId serial not NULL Foreign Key
+      * rating int not NULL
+      * comment text
+      * ratingDate Date not NULL
+
+   - Ingredients
+      * ingredientId serial not NULL Primary Key
+      * recipeId serial not NULL Foreign Key
+      * name character varying 255 Not NULL
+      * quantity character varying 255 Not NULL
+
+   - Instructions
+      * instructionId serial not NULL Primary Key
+      * recipeId serial not NULL Foreign Key
+      * stepNumber int not NULL
+      * description text not NULL

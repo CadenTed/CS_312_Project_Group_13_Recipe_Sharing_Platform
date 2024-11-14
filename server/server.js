@@ -74,6 +74,14 @@ app.get("/api", (req, res) => {
   res.send("Hello World");
 });
 
+app.get("/api/login", (req, res) => {
+
+});
+
+app.get("/api/signup", (req, res) => {
+
+});
+
 app.get("/api/recipes", (req, res) => {
   res.json(recipes);
 });
