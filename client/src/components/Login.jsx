@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "./UserProfile";
-//import "./styles/Login.css"
+import "../styles/Login.css"
 
 function Login({ onLogin }) {
     const [userId, setUserId] = useState('');
@@ -23,12 +23,13 @@ function Login({ onLogin }) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(userData)
+                //body: JSON.stringify(userData)
             });
             const data = await response.json();
 
             if (data.success) {
-                UserProfile.setName(userId);
+                UserProfile.setName("root");
+                onLogin();
                 navigate("/");
             } else {
                 setError(data.error);
@@ -65,7 +66,7 @@ function Login({ onLogin }) {
                 
                <div className="Login-Button-Group">
                   <div className="Login-Button">
-                     <button type="submit">Sign In</button>
+                     <button style={{height: "70%", width: "70%", borderRadius: "30px"}} type="submit">Sign In</button>
                   </div>
                   
                   <div className="Signup-Group">

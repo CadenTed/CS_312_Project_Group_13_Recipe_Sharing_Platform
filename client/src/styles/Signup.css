@@ -1,0 +1,96 @@
+.Container
+   {
+    margin-top: 10%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+   }
+
+.Login
+   {
+    display: flex;
+    flex-direction: column;
+    height: 40vh;
+    width: 80vw; 
+    max-width: 400px; 
+    background-color: bisque;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+   }
+
+.Login-Top
+   {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 2vh;
+   }
+
+.Login-Item-Group
+   {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 70vw;
+    max-width: 350px;
+   }
+
+.Login-Title
+   {
+    margin-bottom: 20%;
+   }
+
+.Login-Item
+   {
+    height: 4vh;
+    width: 70vw;
+    max-width: 300px;
+    margin-bottom: 2vh;
+    align-self: center;
+    text-align: center;
+    padding-left: 2vh;
+    padding-right: 2vh;
+   }
+
+.Login-Button-Group
+   {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 80vw;
+    max-width: 400px; 
+    align-items: center;
+    padding-top: 2vh;
+   }
+
+.Login-Button
+   {
+    width: 50%;
+    height: 100%;
+    align-self: center;
+   }
+
+.Signup-Group
+   {
+    width: 70%;
+    max-width: 350px;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    font-size: larger;
+   }
+
+.Signup-Link
+   {
+    color: skyblue;
+   }
+
+.Error-Message
+   {
+    display: flex;
+    align-items: center;
+    color: red;
+    height: 3vh;
+    border-radius: 30px;
+    padding: 1vh;
+   }

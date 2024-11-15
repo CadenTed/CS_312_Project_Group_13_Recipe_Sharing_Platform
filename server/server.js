@@ -2,16 +2,22 @@ import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import pg from "pg";
+import cors from "cors";
 import { fileURLToPath } from "url";
 
 const app = express();
 const port = 5001;
+
+const corsOptions = {
+   origin: ["http://localhost:3000"]
+}
 
 let idToDisplay;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors(corsOptions));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use(bodyParser.json());
 
@@ -74,8 +80,8 @@ app.get("/api", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/api/login", (req, res) => {
-
+app.post("/api/login", (req, res) => {
+   res.json({"success": true});
 });
 
 app.get("/api/signup", (req, res) => {
