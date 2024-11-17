@@ -3,27 +3,53 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Signup.css";
 
 function Signup() {
-    const [userId, setUserId] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthday, setBirthday] = useState(null);
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         // Check if passwords match
-        const match = password === confirmPassword && password !== '' && confirmPassword !== '';
-        setPasswordMatch(match);
+        if (password !== '')
+            {
+             if (password !== confirmPassword)
+                {
+                 setPasswordMatch(false);
+                 setError("Passwords Do Not Match");
+                }
+             else if (password.length < 8)
+                {
+                 setPasswordMatch(false);
+                 setError("Password needs to be at least 8 characters long");
+                }
+             else
+                {
+                 setPasswordMatch(true);
+                 setError('');
+                }
+            }
+        else
+            {
+             setPasswordMatch(false);
+             setError('');
+            }
+        
     }, [password, confirmPassword]);
 
     const handleForm = async (event) => {
         event.preventDefault();
 
         let userData = {
-            userId: userId,
-            password: password
+            username: username,
+            email: email,
+            birthday: birthday,
+            password: password 
         };
-
+        console.log(birthday);
         if (passwordMatch) {
             try {
                 const response = await fetch("http://localhost:5000/api/signup", {
@@ -50,49 +76,53 @@ function Signup() {
     };
 
     return (
-        <div className="Container">
-            <form className="Login" onSubmit={handleForm}>
-                <div className="Login-Top">
-                    <div className="Login-Title">
+        <div className="Signup-Container">
+            <form className="Signup-Form" onSubmit={handleForm}>
+                <div className="Signup-Top">
+                    <div className="Signup-Title">
                         <h2>Sign Up</h2>
                     </div>
-                    <div className="Login-Item-Group">
-                        <div>
+                    <div className="Signup-Item-Group">
                             <input
-                                className="Login-Item"
+                                className="Signup-Item"
                                 type="text"
                                 placeholder="Username"
-                                onChange={(e) => setUserId(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div className="Login-Item-Group-Match">
+                                                        <input
+                                className="Signup-Item"
+                                type="email"
+                                placeholder="Email"
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
                             <input
-                                className="Login-Item"
+                                className="Signup-Item"
+                                type="date"
+                                onChange={(e) => setBirthday(e.target.value)}
+                            />
+                            <input
+                                className="Signup-Item"
                                 type="password"
                                 placeholder="Password"
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div className="Login-Item-Group-Match">
                             <input
-                                className="Login-Item"
+                                className="Signup-Item"
                                 type="password"
                                 placeholder="Confirm Password"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                             />
-                        </div>
                     </div>
                 </div>
 
-                {error && <div className="Error-Message">{error}</div>}
+                {passwordMatch ? <div className="Password-Match">Valid Password</div> : <div className="Error-Message">{error}</div>}
 
-                <div className="Login-Button-Group">
-                    <div className="Login-Button">
-                        <button type="submit">Sign Up</button>
-                    </div>
+                <div className="Signup-Button-Group">
+                    <button className="Signup-Button" type="submit">Sign Up</button>
                 </div>
             </form>
         </div>

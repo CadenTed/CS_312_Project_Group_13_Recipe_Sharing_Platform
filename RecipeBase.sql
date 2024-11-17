@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS public."Users"
     username character varying(255) COLLATE pg_catalog."default" NOT NULL,
     password character varying(255) COLLATE pg_catalog."default" NOT NULL,
     email text COLLATE pg_catalog."default" NOT NULL,
-    "firstName" text COLLATE pg_catalog."default" NOT NULL,
-    "lastName" text COLLATE pg_catalog."default",
     "profilePicPath" text COLLATE pg_catalog."default",
     birthdate date NOT NULL,
     CONSTRAINT "Users_pkey" PRIMARY KEY ("userId")

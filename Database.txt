@@ -11,8 +11,6 @@ Tables
       * username character varying 255 Not NULL
       * password character varying 255 Not NULL
       * email text Not NULL
-      * firstName text Not NULL
-      * lastName text
       * profilePicPath text
       * birthday date Not NULL
 

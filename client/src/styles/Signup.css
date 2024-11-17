@@ -1,88 +1,68 @@
-.Container
+.Signup-Container
    {
-    margin-top: 10%;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 2vh;
    }
 
-.Login
+.Signup-Form
    {
     display: flex;
     flex-direction: column;
-    height: 40vh;
-    width: 80vw; 
-    max-width: 400px; 
+    height: 60vh;
+    width: 25vw;  
     background-color: bisque;
     justify-content: center;
     align-items: center;
     border-radius: 30px;
    }
 
-.Login-Top
+.Signup-Top
    {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-bottom: 2vh;
+    width: 90%;
    }
 
-.Login-Item-Group
+.Signup-Item-Group
    {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    width: 70vw;
-    max-width: 350px;
+    width: auto;
    }
 
-.Login-Title
+.Signup-Title
    {
-    margin-bottom: 20%;
-   }
-
-.Login-Item
-   {
-    height: 4vh;
-    width: 70vw;
-    max-width: 300px;
     margin-bottom: 2vh;
+   }
+
+.Signup-Item
+   {
     align-self: center;
     text-align: center;
-    padding-left: 2vh;
-    padding-right: 2vh;
+    width: 90%;
+    margin: 2%;
+    height: 5vh;
    }
 
-.Login-Button-Group
+.Signup-Button-Group
    {
+    width: 40%;
     display: flex;
-    flex-direction: row-reverse;
-    width: 80vw;
-    max-width: 400px; 
-    align-items: center;
-    padding-top: 2vh;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding-top: 4vh;
    }
 
-.Login-Button
+.Signup-Button
    {
-    width: 50%;
+    width: 8vw;
     height: 100%;
     align-self: center;
-   }
-
-.Signup-Group
-   {
-    width: 70%;
-    max-width: 350px;
-    margin-left: 1%;
-    margin-bottom: 1%;
-    font-size: larger;
-   }
-
-.Signup-Link
-   {
-    color: skyblue;
+    border-radius: 20px;
    }
 
 .Error-Message
@@ -91,6 +71,22 @@
     align-items: center;
     color: red;
     height: 3vh;
-    border-radius: 30px;
-    padding: 1vh;
+    margin: 2vh;
    }
+
+.Password-Match
+   {
+    display: flex;
+    align-items: center;
+    color: green;
+    height: 3vh;
+    margin: 2vh;
+   }
+
+@media only screen and (max-width: 600px)
+    {
+     .Error-Message, .Password-Match, .Signup-Button, .Signup-Title
+        {
+         font-size: small;
+        }
+    }
