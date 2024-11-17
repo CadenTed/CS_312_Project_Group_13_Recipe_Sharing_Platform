@@ -80,12 +80,59 @@ app.get("/api", (req, res) => {
   res.send("Hello World");
 });
 
-app.post("/api/login", (req, res) => {
-   res.json({"success": true});
+app.post("/api/login", async (req, res) => {
+
+     const { userId, password } = req.body;
+     try 
+       {
+        const result = await db.query('SELECT * FROM users WHERE name = $1', [userId]);
+        if (result.rowCount == 0) 
+           {
+              res.json({"success": false, "error": "Username does not exist"});
+           }
+        else
+           {
+            if (result.rows[0].password == password)
+               {
+                loggedInUsername = userId;
+                loggedInUserId = result.rows[0].user_id;
+                res.json({"success": true})
+               }
+            else
+               {
+                 res.json({"success": false, "error": "Password is incorrect"});
+               }
+           }
+       } 
+     catch (err) 
+       {
+        console.error('Error during signin:', err);
+        res.status(500).send('Server Error');
+       }
 });
 
-app.get("/api/signup", (req, res) => {
+app.get("/api/signup", async (req, res) => {
 
+     const { username, email, birthday, password } = req.body;
+     const numUsers = (await db.query("SELECT * FROM users")).rowCount
+
+     try 
+        {
+         const result = await db.query('SELECT * FROM users WHERE name = $1', [username]);
+         if (result.rowCount > 0) 
+            {
+             return res.json({"success": false, "error": "Username already exists" });
+            }
+
+         await db.query('INSERT INTO users (user_id, username, password, email, birthdate) VALUES ($1, $2, $3, $4, 5$)', [numUsers + 1, username, password, email, birthday]);
+
+         res.json({"success": true});
+        } 
+     catch (err) 
+        {
+         console.error('Error during signup:', err);
+         res.status(500).send('Server Error');
+        }
 });
 
 app.get("/api/recipes", (req, res) => {

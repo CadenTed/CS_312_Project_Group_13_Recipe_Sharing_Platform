@@ -40,15 +40,16 @@ ALTER TABLE IF EXISTS public."Users"
 CREATE TABLE IF NOT EXISTS public."Recipes"
 (
     "recipeId" integer NOT NULL DEFAULT nextval('"Recipes_recipeId_seq"'::regclass),
-    "recipeUserId" integer NOT NULL DEFAULT nextval('"Recipes_recipeUserId_seq"'::regclass),
+    "userId" integer NOT NULL DEFAULT nextval('"Recipes_recipeUserId_seq"'::regclass),
     "dateCreated" date NOT NULL,
     name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     description text COLLATE pg_catalog."default",
     "prepTime" integer,
     "cookTime" integer,
     servings double precision,
+    imagePath text pg_catalog."default",
     CONSTRAINT "Recipes_pkey" PRIMARY KEY ("recipeId"),
-    CONSTRAINT "Recipes_recipeUserId_fkey" FOREIGN KEY ("recipeUserId")
+    CONSTRAINT "Recipes_userId_fkey" FOREIGN KEY ("userId")
         REFERENCES public."Users" ("userId") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

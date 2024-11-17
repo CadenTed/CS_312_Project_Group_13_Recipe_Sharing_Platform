@@ -16,13 +16,14 @@ Tables
 
    - Recipes
       * recipeId serial not NULL Primary Key
-      * recipe_user_id serial not NULL Foreign Key
+      * userId serial not NULL Foreign Key
       * dateCreated date not NULL
       * name character varying 255 Not NULL
       * description text
       * prepTime int
       * cookTime int
       * servings double
+      * imagePath text
 
    - Ratings
       * ratingId serial not NULL Primary Key
