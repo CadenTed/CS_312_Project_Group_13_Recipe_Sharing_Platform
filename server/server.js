@@ -12,7 +12,19 @@ const corsOptions = {
    origin: ["http://localhost:3000"]
 }
 
+const db = new pg.Client({
+   user: "postgres",
+   host: "localhost",
+   database: "RecipeBase",
+   password: "Pr1nt3xP@lms",
+   port: "5432"
+});
+
+db.connect();
+
 let idToDisplay;
+let loggedInUsername = "";
+let loggedInUserId = 0;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,16 +88,14 @@ const recipeInfo = [
   },
 ];
 
-app.get("/api", (req, res) => {
-  res.send("Hello World");
-});
-
 app.post("/api/login", async (req, res) => {
 
      const { userId, password } = req.body;
+
+     console.log(`Request recieved: ${req.body}`);
      try 
        {
-        const result = await db.query('SELECT * FROM users WHERE name = $1', [userId]);
+        const result = await db.query('SELECT * FROM "Users" WHERE username = $1', [userId]);
         if (result.rowCount == 0) 
            {
               res.json({"success": false, "error": "Username does not exist"});
@@ -111,20 +121,21 @@ app.post("/api/login", async (req, res) => {
        }
 });
 
-app.get("/api/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
 
      const { username, email, birthday, password } = req.body;
-     const numUsers = (await db.query("SELECT * FROM users")).rowCount
+     const numUsers = (await db.query('SELECT * FROM "Users"')).rowCount
+     console.log("Signup request recieved");
 
      try 
         {
-         const result = await db.query('SELECT * FROM users WHERE name = $1', [username]);
+         const result = await db.query('SELECT * FROM "Users" WHERE username = $1', [username]);
          if (result.rowCount > 0) 
             {
              return res.json({"success": false, "error": "Username already exists" });
             }
 
-         await db.query('INSERT INTO users (user_id, username, password, email, birthdate) VALUES ($1, $2, $3, $4, 5$)', [numUsers + 1, username, password, email, birthday]);
+         await db.query('INSERT INTO "Users" ("userId", username, password, email, birthdate) VALUES ($1, $2, $3, $4, $5)', [numUsers + 1, username, password, email, birthday]);
 
          res.json({"success": true});
         } 
