@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
   const { ingredients = [], cookware = [], steps = [] } = info;
+
+  const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
+
+  useEffect(() => {
+    setCheckedSteps(new Array(steps.length).fill(false));
+  }, [steps]);
+
+  const checkStep = (index) => {
+    const updatedCheckedSteps = [...checkedSteps];
+    updatedCheckedSteps[index] = !updatedCheckedSteps[index];
+    setCheckedSteps(updatedCheckedSteps);
+  };
 
   return (
     <fieldset>
@@ -65,8 +77,14 @@ function RecipeInfo({ info }) {
                 <tbody>
                   {steps.length > 0 ? (
                     steps.map((step, index) => (
-                      <tr key={index}>
-                        <td style={{width: "10%"}}>{index + 1}</td>
+                      <tr
+                        key={index}
+                        onClick={() => checkStep(index)}
+                        style={{
+                          backgroundColor: checkedSteps[index] ? "green" : "transparent",
+                        }}
+                      >
+                        <td style={{ width: "10%" }}>{index + 1}</td>
                         <td>{step}</td>
                       </tr>
                     ))
