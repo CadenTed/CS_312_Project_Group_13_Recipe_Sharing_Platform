@@ -6,6 +6,7 @@ function Comments(recipeId) {
 
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
+  const {commentData, setCommentData} = useState(null);
 
   const getComments = async () => {
       let recipeData = {
@@ -21,12 +22,12 @@ function Comments(recipeId) {
                },
             body: JSON.stringify(recipeData)
          })
-         const data = await response.json();
+       setCommentData( await response.json());
 
-         if (data.success) {
+         if (commentData.success) {
            
          } else {
-            setError(data.error);
+            setError(commentData.error);
          }
       } catch (err) {
          console.error("Error during login:", err);
@@ -48,12 +49,12 @@ function Comments(recipeId) {
          },
        body: JSON.stringify(commentData)
       })
-      const data = await response.json();
+      const result = await response.json();
 
-      if (data.success) {
+      if (result.success) {
          
       } else {
-         setError(data.error);
+         setError(result.error);
       }
    } catch (err) {
       console.error("Error during login:", err);
@@ -66,30 +67,58 @@ function Comments(recipeId) {
   })
 
   return (
-    <div style={{ marginTop: "3em" }}>
-      <form onSubmit={addComment}>
-        <div className="d-flex align-items-end">
-          <div style={{ flexBasis: "66.6666%", marginRight: "10px" }}>
-            <div className="d-flex flex-column">
-              <label htmlFor="comment" className="form-label text-start ms-5">
-                Comment:
-              </label>
-              <textarea
-                id="comment"
-                name="comment"
-                className="form-control ms-5"
-                rows="5"
-                onChange={(e) => setComment(e.target.value)}
-                required
-              ></textarea>
+   <div className="commentContainer">
+      <div style={{ marginTop: "3em" }}>
+         <form onSubmit={addComment}>
+            <div className="d-flex align-items-end justify-content-center">
+               <div style={{ flexBasis: "66.6666%", marginRight: "10px" }}>
+                  <div className="d-flex flex-column">
+                  <label htmlFor="comment" className="form-label text-start ms-5">
+                     Comment:
+                  </label>
+                  <textarea
+                     id="comment"
+                     name="comment"
+                     className="form-control ms-5"
+                     rows="5"
+                     onChange={(e) => setComment(e.target.value)}
+                     required
+                  ></textarea>
+                  </div>
+               </div>
+               <button type="submit" className="btn btn-outline-primary ms-5">
+                  Submit
+               </button>
             </div>
-          </div>
-          <button type="submit" className="btn btn-outline-primary ms-5">
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+         </form>
+      </div>
+      <div className="d-flex align-items-end justify-content-center" style={{marginTop: "3vh"}}>
+         {commentData != null ? (
+            commentData.map((comment, index) => (
+               <div key={index}>
+                  <div className="commentHeader">
+                     <div>
+                        <div className="commentDate">
+                           <h3>{comment.date}</h3>
+                        </div>
+                        <div className="commentAuthor">
+                           <h3>{comment.author}</h3>
+                        </div>
+                     <div/>
+                  </div>
+                  <div className="commentContent">
+                     <p>{comment.content}</p>
+                  </div>
+               </div>
+      </div> ))
+         ) : (
+            <div>
+               <h3>No Comments Yet</h3>
+            </div>
+         )}
+      </div>
+   </div>
+            
   );
 }
 
