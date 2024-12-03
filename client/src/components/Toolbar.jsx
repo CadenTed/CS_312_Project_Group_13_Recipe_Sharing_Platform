@@ -2,7 +2,12 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 
-const Toolbar = () => {
+const Toolbar = ({ searchText, setSearchText }) => {
+  
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  }
+
   return (
     <div style={styles.toolbar}>
       {/* Search Input */}
@@ -11,6 +16,8 @@ const Toolbar = () => {
         placeholder="Search..."
         className="form-control"
         style={styles.search}
+        value={searchText}
+        onChange={handleSearchChange}
       />
 
       {/* Filter Button */}
