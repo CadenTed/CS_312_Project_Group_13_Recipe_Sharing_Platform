@@ -4,6 +4,7 @@ import path from "path";
 import pg from "pg";
 import cors from "cors";
 import { fileURLToPath } from "url";
+import { get } from "http";
 
 const app = express();
 const port = 5001;
@@ -23,8 +24,14 @@ const db = new pg.Client({
 db.connect();
 
 let idToDisplay;
-let loggedInUsername = "";
-let loggedInUserId = 0;
+let loggedInUsername = "admin";
+
+const getLoggedInUserId = async () => {
+  const result = await db.query('SELECT "userId" FROM "Users" WHERE "username" = $1', [loggedInUsername]);
+  return result.rows[0].userId;
+}
+
+let loggedInUserId = getLoggedInUserId();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -155,7 +162,7 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/savedRecipes", async (req, res) => {
    try
       {
-       const result = await db.query(`SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" LEFT JOIN "Users" ON "Recipes"."recipeId" = "Users"."saved_recipes" WHERE "Users"."userId" = ${loggedInUserId};`);
+       const result = await db.query(`SELECT "Recipes"."name", "Recipes"."description", "Recipes"."recipeId", "Recipes"."imagepath" FROM "Recipes" LEFT JOIN "Users" ON "Recipes"."recipeId" = "Users"."saved" WHERE "Users"."userId" = ${loggedInUserId};`);
        if (result.rowCount > 0)
        {
          res.json({"success": true, "recipes": result.rows});
@@ -168,7 +175,7 @@ app.post("/api/savedRecipes", async (req, res) => {
    catch(err)
       {
        console.error('Error during load:', err);
-       res.status(500).send('Server Error');
+       res.status(500).json({"message": 'Saved Recipes Server Error'});
       }
 });
 
@@ -188,7 +195,7 @@ app.post("/api/userRecipes", async (req, res) => {
    catch(err)
       {
        console.error('Error during load:', err);
-       res.status(500).send('Server Error');
+       res.status(500).json({"message": 'Server Error'});
       }
 });
 
@@ -331,3 +338,4 @@ app.listen(port, () => {
 const setIdToDisplay = (id) => {
   idToDisplay = id;
 };
+

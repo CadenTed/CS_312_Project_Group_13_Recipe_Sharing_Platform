@@ -3,8 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
-  const { ingredients = [], steps = [], cookware = []} = info;
-  const recipeId = info.id;
+  const { ingredients = [], steps = [], cookware = [], id } = info;
+  console.log("Info", info);
+  console.log("Ingredients", ingredients);
+  console.log("Steps", steps);
+  console.log("Cookware", cookware);
 
   const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
 
@@ -20,14 +23,29 @@ function RecipeInfo({ info }) {
     setCheckedSteps(updatedCheckedSteps);
   };
 
-  const saveRecipe = async () => {
-   const response = await fetch("/api/save/", {
-      method: 'POST',
-      headers: {
-         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({recipeId})
-   })
+  const onSaveRecipe = async () => {
+    console.log("Id", id);
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      }
+
+      const result = await fetch("api/save", options);
+
+      if (!result.ok) {
+        throw new Error("Failed to save Recipe");
+      }
+
+      const data = await result.json();
+      console.log(data);
+    }
+    catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -105,6 +123,11 @@ function RecipeInfo({ info }) {
               </table>
             </div>
           </div>
+        </div>
+        <div className="row">
+          <div className="col">
+              <button className="btn btn-primary mt-3 mb-0" onClick={onSaveRecipe}>Save Recipe</button>
+            </div>
         </div>
       </div>
     </fieldset>

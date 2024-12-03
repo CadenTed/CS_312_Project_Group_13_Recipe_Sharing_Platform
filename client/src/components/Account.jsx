@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RecipeCard from "./RecipeCard";
+import "../styles/Account.css";
 
 function Account() {
+   const [activeTab, setActiveTab] = useState("posted");
 
    const [tab, setTab] = useState(false);
-   const [userRecipes, setUserRecipes] = useState(null);
-   const [savedRecipes, setSavedRecipes] = useState(null);
+   const [userRecipes, setUserRecipes] = useState([]);
+   const [savedRecipes, setSavedRecipes] = useState([]);
 
    const getUserRecipes = async () => {
       const response = await fetch("http://localhost:5001/api/savedRecipes", {
@@ -21,7 +23,7 @@ function Account() {
          method: "POST",
       });
       setSavedRecipes(await response.json());
-      console.log(savedRecipes);
+      console.log("Saved", savedRecipes.recipes);
    }
 
    useEffect(() => {
@@ -29,28 +31,58 @@ function Account() {
       getUserRecipes();
    }, []);
 
+   const handleTabClick = (tab) => {
+      setActiveTab(tab);
+   }
+
    return(
       <div className="">
          <div className="">
-            <div>
+            <div style={{padding: "2em"}}>
                <h2>Account</h2>
+               <img src="/avatar-default.svg" alt="Avatar" width={150} style={{ float: "left" }} />
+               <h4 style={{float: "left"}}>Username</h4>
+               <p style={{float: "left", margin: "2em 2em"}}>Biography: <br/> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
-            <div>
-               {tab ? (
+            <div style={{clear: "both"}}></div>
+            <div className="tabs">
+               <button
+                  className={`tab-button ${activeTab === "posted" ? "active" : ""}`}
+                  onClick={() => { handleTabClick("posted");  getUserRecipes(); }}
+               >
+                  Posted Recipes
+               </button>
+               <button
+                  className={`tab-button ${activeTab === "saved" ? "active" : ""}`}
+                  onClick={() => { handleTabClick("saved"); getSavedRecipes(); }}
+               >
+                  Saved Recipes
+               </button>
+            </div>
+            <div className="tab-content">
+               {activeTab === "posted" ? (
                   <div style={styles.gridContainer}>
                      <div style={styles.grid}>
                      {userRecipes.length > 0 ? (
-                        userRecipes.map((recipe) => (
+                        userRecipes.recipes.map((recipe) => (
                            <RecipeCard key={recipe.recipeId} recipe={recipe} />
                         ))
                      ) : (
-                        <p>No Recipes Available</p>
+                        <p>No Posted Recipes Available</p>
                      )}
                      </div>
                   </div>
                ) : (
-                  <div>
-
+                  <div style={styles.gridContainer}>
+                     <div style={styles.grid}>
+                     {savedRecipes.recipes.length > 0 ? (
+                        savedRecipes.recipes.map((recipe) => (
+                           <RecipeCard key={recipe.recipeId} recipe={recipe} />
+                        ))
+                     ) : (
+                        <p>No Saved Recipes Available</p>
+                     )}
+                     </div>
                   </div>
                )}
             </div>
@@ -61,18 +93,13 @@ function Account() {
 
 const styles = {
    gridContainer: {
-     diplay: "flex",
+     display: "flex",
      justifyContent: "center",
    },
    grid: {
      display: "grid",
-     gridTemplateColumns: "repeat(5, 1fr)",
-     gap: "20px",
-     padding: "20px",
-     justifyContent: "center",
-     width: "100%",
-     maxWidth: "1200px", // Adjust as needed
-     margin: "0 auto",
+     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+     gap: "16px",
    },
  };
 
