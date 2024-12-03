@@ -271,6 +271,46 @@ app.get("/api/recipe-info", async (req, res) => {
   
 });
 
+app.post("/api/save", async (req, res) => {
+   const { recipeId } = req.body;
+   const result = await db.query(`UPDATE "Users" SET saved = ${recipeId} WHERE "userId" = ${loggedInUserId};`);
+});
+
+app.post("/api/addComment", async (req, res) => {
+   const { commentContent, recipeId } = req.body;
+   try
+      {
+      const result = await db.query('INSERT INTO "Ratings" ("recipeId", "userId", "comment", "ratingDate") VALUES ($1, $2, $3, $4);', [recipeId, loggedInUserId, commentContent, new Date().toISOString()]);
+      res.json(result.rows);
+      }
+   catch(err)
+      {
+      console.log(err);
+      }
+   
+});
+
+app.post("/api/getComments", async (req, res) => {
+   console.log(req.body);
+   const { recipeId } = req.body;
+   try
+      {
+       const result = await db.query('SELECT * FROM "Ratings" WHERE "recipeId" = $1', [recipeId]);
+       if (result.rowCount > 0)
+         {
+         res.json({"success": true , "commentData": result.rows});
+         }
+       else
+         {
+          res.json({"success": false, "commentData": null});
+         }
+      }
+   catch(err)
+      {
+       
+      }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
