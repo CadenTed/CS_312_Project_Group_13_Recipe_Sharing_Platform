@@ -230,7 +230,7 @@ app.get("/api/recipe-info", async (req, res) => {
   }
 
   try {
-    const cookwareResults = await db.query(`SELECT * FROM "Cookeware" WHERE recipeid = ${id};`);
+    const cookwareResults = await db.query(`SELECT * FROM "Cookware" WHERE recipeid = ${id};`);
 
     if (cookwareResults.rowCount > 0) {
       cookware = cookwareResults.rows;
