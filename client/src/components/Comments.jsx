@@ -2,16 +2,18 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Comments({commentData}) {
+function Comments(comments) {
 
   const [comment, setComment] = useState('');
+  const {commentData = [], recipeId} = comments;
+  console.log(commentData);
 
   const addComment = async (event) => {
       event.preventDefault();
 
       let commentData = {
          commentContent: comment,
-         recipeId: commentData.id };
+         recipeId: recipeId };
 
       console.log(commentData);
 
@@ -53,7 +55,7 @@ function Comments({commentData}) {
          </form>
       </div>
       <div className="d-flex align-items-end justify-content-center" style={{marginTop: "3vh"}}>
-         {commentData != null ? (
+         {commentData.length > 0 ? (
             commentData.map((comment, index) => (
                <div key={index}>
                   <div className="commentHeader">

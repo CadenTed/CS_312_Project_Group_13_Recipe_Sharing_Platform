@@ -3,7 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
-  const { ingredients = [], steps = [], cookware = [] } = info;
+  const { ingredients = [], steps = [], cookware = []} = info;
+  const recipeId = info.id;
 
   const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
 
@@ -19,9 +20,20 @@ function RecipeInfo({ info }) {
     setCheckedSteps(updatedCheckedSteps);
   };
 
+  const saveRecipe = async () => {
+   const response = await fetch("/api/save/", {
+      method: 'POST',
+      headers: {
+         "Content-Type": "application/json",
+      },
+      body: JSON.stringify({recipeId})
+   })
+  }
+
   return (
     <fieldset>
       <legend>Recipe Information</legend>
+      <button onClick={saveRecipe}></button>
       <div className="container-fluid text-center w-100">
         <div className="row">
           <div className="col">
@@ -79,7 +91,7 @@ function RecipeInfo({ info }) {
                 <tbody>
                   {steps.length > 0 ? (
                     steps.map((step, index) => (
-                      <tr key={index} onClick={() => {checkStep(index)}} style={{backgroundColor: checkedSteps[index] ? "transparent" : "green"}}>
+                      <tr key={index} onClick={() => {checkStep(index)}} style={{backgroundColor: !checkedSteps[index] ? "transparent" : "green"}}>
                         <td>{step.stepNumber}</td>
                         <td>{step.description}</td>
                       </tr>
