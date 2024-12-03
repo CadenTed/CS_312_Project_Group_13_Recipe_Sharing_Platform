@@ -18,8 +18,8 @@ const RecipeGrid = () => {
     <div style={styles.gridContainer}>
       <div style={styles.grid}>
         {recipes.length > 0 ? (
-          recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+          recipes.map((recipe, index) => (
+            <RecipeCard key={recipe.recipeId} recipe={recipe} />
           ))
         ) : (
           <p>No Recipes Available</p>

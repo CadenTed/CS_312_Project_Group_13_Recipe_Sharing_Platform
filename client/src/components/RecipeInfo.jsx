@@ -3,13 +3,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
-  const { ingredients = [], cookware = [], steps = [] } = info;
+  const { ingredients = [], steps = [], cookware = [] } = info;
+  console.log("Info", info);
+  console.log("Ingredients", ingredients);
+  console.log("Steps", steps);
+  console.log("Cookware", cookware);
 
   const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
 
   useEffect(() => {
-    setCheckedSteps(new Array(steps.length).fill(false));
-  }, [steps]);
+    if (steps.length !== checkedSteps.length) {
+      setCheckedSteps(new Array(steps.length).fill(false));
+    }
+  }, [steps.length]);
 
   const checkStep = (index) => {
     const updatedCheckedSteps = [...checkedSteps];
@@ -30,7 +36,7 @@ function RecipeInfo({ info }) {
                   {ingredients.length > 0 ? (
                     ingredients.map((ingredient, index) => (
                       <tr key={index}>
-                        <td>{ingredient}</td>
+                        <td>{ingredient.quantity} {ingredient.name}</td>
                       </tr>
                     ))
                   ) : (
@@ -50,7 +56,7 @@ function RecipeInfo({ info }) {
                   {cookware.length > 0 ? (
                     cookware.map((item, index) => (
                       <tr key={index}>
-                        <td>{item}</td>
+                        <td>{item.name}</td>
                       </tr>
                     ))
                   ) : (
@@ -63,29 +69,23 @@ function RecipeInfo({ info }) {
             </div>
           </div>
         </div>
-        <div className="row mt-3">
+        <div className="row">
           <div className="col">
             <h5>Instructions</h5>
-            <div className="table-container instructions">
+            <div className="table-container">
               <table className="recipe-table">
                 <thead>
                   <tr>
                     <th>Step Number</th>
-                    <th>Instruction</th>
+                    <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   {steps.length > 0 ? (
                     steps.map((step, index) => (
-                      <tr
-                        key={index}
-                        onClick={() => checkStep(index)}
-                        style={{
-                          backgroundColor: checkedSteps[index] ? "green" : "transparent",
-                        }}
-                      >
-                        <td style={{ width: "10%" }}>{index + 1}</td>
-                        <td>{step}</td>
+                      <tr key={index}>
+                        <td>{step.stepNumber}</td>
+                        <td>{step.description}</td>
                       </tr>
                     ))
                   ) : (

@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function RecipeCard({ recipe }) {
-  const { id, name, description, imagepath } = recipe;
+  const { recipeId, name, description, imagepath } = recipe;
 
   const onClick = async (e) => {
+    console.log("Id", recipeId);
+
     try {
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ recipeId }),
       };
 
       const result = await fetch("/api/recipe-id", options);
@@ -35,7 +37,7 @@ function RecipeCard({ recipe }) {
       style={{ width: "18rem", textDecoration: "none" }}
       onClick={onClick}
     >
-      <input type="hidden" value={id} name="id" />
+      <input type="hidden" value={recipeId} name="id" />
       <img
         src={imagepath}
         height="150px"

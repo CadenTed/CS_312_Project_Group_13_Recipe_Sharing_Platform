@@ -8,6 +8,7 @@ import Comments from "./Comments";
 
 function DisplayRecipe() {
   const [data, setData] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("/api/recipe-info", {
@@ -16,12 +17,20 @@ function DisplayRecipe() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch recipe info");
+        }
+        return res.json();
+      })
       .then((data) => {
         setData(data);
-        console.log(data);
+        console.log("Data: ", data);
       })
-      .catch((err) => console.error("Error Fetching Recipe Info: ", err));
+      .catch((err) => {
+        console.error("Error Fetching Recipe Info: ", err);
+        setError(err.message);
+      });
   }, []);
 
   return (

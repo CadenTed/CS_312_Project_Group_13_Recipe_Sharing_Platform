@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 async function getRecipes()
    {
-    const recipes = await db.query('SELECT name, description, imagepath FROM "Recipes"');
+    const recipes = await db.query('SELECT name, description, imagepath, "recipeId" FROM "Recipes"');
     return recipes.rows;
    }
 
@@ -205,14 +205,70 @@ app.get("/api/recipes", async (req, res) => {
 });
 
 app.post("/api/recipe-id", (req, res) => {
-  setIdToDisplay(req.body.id);
+  console.log("Recipe ID:", req.body);
+  setIdToDisplay(req.body.recipeId);
 });
 
-app.get("/api/recipe-info", (req, res) => {
-  const id = idToDisplay;
-  const recipe = recipeInfo.find((recipe) => recipe.id == id);
-  console.log(recipe);
-  res.json(recipe);
+app.get("/api/recipe-info", async (req, res) => {
+  const id = idToDisplay
+  let ingredients, cookware, steps;
+  console.log(`Recipe ID: ${id}`);
+
+  try {
+    const ingredientsResults = await db.query(`SELECT * FROM "Ingredients" WHERE "recipeId" = ${id};`);
+
+    if (ingredientsResults.rowCount > 0) {
+      ingredients = ingredientsResults.rows;
+    }
+    else {
+      ingredients = [];
+    }
+  }
+  catch (err) {
+    console.error('Ingredients failed to load:', err);
+    res.status(500).send('Server Error');
+  }
+
+  try {
+    const cookwareResults = await db.query(`SELECT * FROM "Cookeware" WHERE recipeid = ${id};`);
+
+    if (cookwareResults.rowCount > 0) {
+      cookware = cookwareResults.rows;
+    }
+    else {
+      cookware = [];
+    }
+  }
+  catch (err) {
+    console.error('Cookware failed to load:', err);
+    res.status(500).send('Server Error');
+  }
+
+  try {
+    const stepsResults = await db.query(`SELECT * FROM "Instructions" WHERE "recipeId" = ${id};`);
+
+    if (stepsResults.rowCount > 0) {
+      steps = stepsResults.rows;
+    }
+    else {
+      steps = [];
+    }
+  }
+  catch (err) {
+    console.error('Steps failed to load:', err);
+    res.status(500).send('Server Error');
+  }
+
+  console.log("Ingredients:", ingredients, Array.isArray(ingredients));
+  console.log("Cookware:", cookware, Array.isArray(cookware));
+  console.log("Steps:", steps, Array.isArray(steps));
+
+  res.json({
+    ingredients: ingredients,
+    steps: steps,
+    cookware: cookware,
+  })
+  
 });
 
 app.listen(port, () => {
