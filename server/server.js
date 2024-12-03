@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 async function getRecipes()
    {
-    const recipes = await db.query('SELECT name, description FROM "Recipes');
+    const recipes = await db.query('SELECT name, description, imagepath FROM "Recipes"');
     return recipes.rows;
    }
 
@@ -192,8 +192,16 @@ app.post("/api/userRecipes", async (req, res) => {
       }
 });
 
-app.get("/api/recipes", (req, res) => {
-  res.json(recipes);
+app.get("/api/recipes", async (req, res) => {
+  try {
+    const recipes = await getRecipes();
+    console.log(recipes);
+    res.json(recipes);
+  }
+  catch (err) {
+    console.error('Error during load:', err);
+    res.status(500).send('Server Error');
+  }
 });
 
 app.post("/api/recipe-id", (req, res) => {

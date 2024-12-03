@@ -14,7 +14,7 @@ import Account from "./components/Account";
 
 function App() {
   
-  let [isLoggedIn, setIsLoggedIn] = useState(false);
+  let [isLoggedIn, setIsLoggedIn] = useState(true);
 
   function handleLogin()
    {

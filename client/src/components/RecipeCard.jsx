@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function RecipeCard({ recipe }) {
-  const { id, name, description, img } = recipe;
+  const { id, name, description, imagepath } = recipe;
 
   const onClick = async (e) => {
     try {
@@ -37,7 +37,7 @@ function RecipeCard({ recipe }) {
     >
       <input type="hidden" value={id} name="id" />
       <img
-        src={img}
+        src={imagepath}
         height="150px"
         width="150px"
         className="card-img-top"
