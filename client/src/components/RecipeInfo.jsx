@@ -4,10 +4,6 @@ import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
   const { ingredients = [], steps = [], cookware = [] } = info;
-  console.log("Info", info);
-  console.log("Ingredients", ingredients);
-  console.log("Steps", steps);
-  console.log("Cookware", cookware);
 
   const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
 
@@ -15,7 +11,7 @@ function RecipeInfo({ info }) {
     if (steps.length !== checkedSteps.length) {
       setCheckedSteps(new Array(steps.length).fill(false));
     }
-  }, [steps.length]);
+  }, [steps]);
 
   const checkStep = (index) => {
     const updatedCheckedSteps = [...checkedSteps];
@@ -83,7 +79,7 @@ function RecipeInfo({ info }) {
                 <tbody>
                   {steps.length > 0 ? (
                     steps.map((step, index) => (
-                      <tr key={index}>
+                      <tr key={index} onClick={() => {checkStep(index)}} style={{backgroundColor: checkedSteps[index] ? "transparent" : "green"}}>
                         <td>{step.stepNumber}</td>
                         <td>{step.description}</td>
                       </tr>

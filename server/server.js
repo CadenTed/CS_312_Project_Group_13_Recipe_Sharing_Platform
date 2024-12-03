@@ -211,7 +211,7 @@ app.post("/api/recipe-id", (req, res) => {
 
 app.get("/api/recipe-info", async (req, res) => {
   const id = idToDisplay
-  let ingredients, cookware, steps;
+  let ingredients, cookware, steps, comments;
   console.log(`Recipe ID: ${id}`);
 
   try {
@@ -259,14 +259,27 @@ app.get("/api/recipe-info", async (req, res) => {
     res.status(500).send('Server Error');
   }
 
-  console.log("Ingredients:", ingredients, Array.isArray(ingredients));
-  console.log("Cookware:", cookware, Array.isArray(cookware));
-  console.log("Steps:", steps, Array.isArray(steps));
+  try {
+    const commentResult = await db.query(`SELECT * FROM "Ratings" LEFT JOIN "Users" ON "Users".username = "Ratings".username WHERE "recipeId" = ${id}`);
+    if (commentResult.rowCount > 0) {
+       comments = commentResult.rows;
+    }
+    else {
+       comments = []
+    }
+   }
+    catch(err) {
+      console.error('Comments failed to load:', err);
+      res.status(500).send('Server Error');
+   }
+
 
   res.json({
     ingredients: ingredients,
     steps: steps,
     cookware: cookware,
+    comments: comments,
+    recipeId: id,
   })
   
 });

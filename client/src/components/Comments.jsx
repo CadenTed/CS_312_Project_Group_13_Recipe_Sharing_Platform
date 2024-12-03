@@ -2,40 +2,19 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Comments({recipeId}) {
+function Comments({commentData}) {
 
   const [comment, setComment] = useState('');
-  const [commentData, setCommentData] = useState(null);
-
-  const getComments = async () => {
-      console.log(`Recipe Id: ${recipeId}\n`);
-      const response = await fetch("http://localhost:5001/api/getComments", {
-         method: 'POST',
-         headers: {
-            "Content-Type": "application/json"
-            },
-         body: JSON.stringify({recipeId})
-      });
-      const result = await response.json();
-      console.log(result);
-      if (result.success)
-         {
-         setCommentData(result.commentContent);
-         }
-      else
-         {
-          console.log("No comments found");
-         }
-               
-     }
 
   const addComment = async (event) => {
       event.preventDefault();
 
       let commentData = {
          commentContent: comment,
-         recipeId: recipeId };
+         recipeId: commentData.id };
+
       console.log(commentData);
+
       const response = await fetch("http://localhost:5001/api/addComment", {
          method: 'POST',
          headers: {
@@ -45,13 +24,6 @@ function Comments({recipeId}) {
          });
       setComment('');
   }
-
-  useEffect(() => {
-   if (recipeId)
-      {
-       getComments();
-      }
-   }, [recipeId]);
   
 
   return (
@@ -87,10 +59,10 @@ function Comments({recipeId}) {
                   <div className="commentHeader">
                      <div>
                         <div className="commentDate">
-                           <h3>{comment.date}</h3>
+                           <h3>{comment.ratingDate}</h3>
                         </div>
                         <div className="commentAuthor">
-                           <h3>{comment.author}</h3>
+                           <h3>{comment.username}</h3>
                         </div>
                      <div/>
                   </div>

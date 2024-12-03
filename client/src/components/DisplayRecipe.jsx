@@ -24,7 +24,6 @@ function DisplayRecipe() {
       })
       .then((data) => {
         setData(data);
-        console.log("Data: ", data);
       })
       .catch((err) => {
         console.error("Error Fetching Recipe Info: ", err);
@@ -37,7 +36,7 @@ function DisplayRecipe() {
       <CreatorInfo />
       <StarRating />
       <RecipeInfo info={data} />
-      <Comments recipeId={data.id} />
+      <Comments comments={data.comments} />
     </div>
   );
 }
