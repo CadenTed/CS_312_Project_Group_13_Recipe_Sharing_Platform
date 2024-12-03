@@ -2,69 +2,57 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Comments(recipeId) {
+function Comments({recipeId}) {
 
   const [comment, setComment] = useState('');
-  const [error, setError] = useState('');
-  const {commentData, setCommentData} = useState(null);
+  const [commentData, setCommentData] = useState(null);
 
   const getComments = async () => {
-      let recipeData = {
-         recipeId: recipeId
-      };
-
-      try
-         {
-         const response = await fetch("http://localhost:5001/api/getComments", {
-            method: 'POST',
-            headers: {
-               "Content-Type": "application/json"
-               },
-            body: JSON.stringify(recipeData)
-         })
-       setCommentData( await response.json());
-
-         if (commentData.success) {
-           
-         } else {
-            setError(commentData.error);
-         }
-      } catch (err) {
-         console.error("Error during login:", err);
-         setError("An error occurred. Please try again.");
-     }
-  }
-
-  const addComment = async () => {
-   let commentData = {
-      commentContent: comment
-   };
-
-   try
-      {
-       const response = await fetch("http://localhost:5001/api/addComment", {
-       method: 'POST',
-       headers: {
-         "Content-Type": "application/json"
-         },
-       body: JSON.stringify(commentData)
-      })
+      console.log(`Recipe Id: ${recipeId}\n`);
+      const response = await fetch("http://localhost:5001/api/getComments", {
+         method: 'POST',
+         headers: {
+            "Content-Type": "application/json"
+            },
+         body: JSON.stringify({recipeId})
+      });
       const result = await response.json();
+      console.log(result);
+      if (result.success)
+         {
+         setCommentData(result.commentContent);
+         }
+      else
+         {
+          console.log("No comments found");
+         }
+               
+     }
 
-      if (result.success) {
-         
-      } else {
-         setError(result.error);
-      }
-   } catch (err) {
-      console.error("Error during login:", err);
-      setError("An error occurred. Please try again.");
-   }
+  const addComment = async (event) => {
+      event.preventDefault();
+
+      let commentData = {
+         commentContent: comment,
+         recipeId: recipeId };
+      console.log(commentData);
+      const response = await fetch("http://localhost:5001/api/addComment", {
+         method: 'POST',
+         headers: {
+            "Content-Type": "application/json"
+            },
+         body: JSON.stringify(commentData)
+         });
+      setComment('');
   }
 
   useEffect(() => {
-      getComments();
-  })
+   if (recipeId)
+      {
+       getComments();
+      }
+   }, [recipeId]);
+  
 
   return (
    <div className="commentContainer">

@@ -17,9 +17,20 @@ function RecipeInfo({ info }) {
     setCheckedSteps(updatedCheckedSteps);
   };
 
+  const saveRecipe = async () => {
+   fetch("http://localhost:5001/api/save",{
+      method: 'POST',
+      headers: {
+         "Content-Type": 'application/json',
+         },
+      body: JSON.stringify({recipeId: info.id})
+      });
+  }
+
   return (
     <fieldset>
       <legend>Recipe Information</legend>
+      <button onClick={saveRecipe}>Save Recipe</button>
       <div className="container-fluid text-center w-100">
         <div className="row">
           <div className="col">
