@@ -22,9 +22,11 @@ const Toolbar = () => {
       </Link>
 
       {/* Avatar */}
+      <Link to="/account">
       <div style={styles.avatar} className="ms-2">
-        A
+         <h2 style={{textDecoration: "none"}}>A</h2>
       </div>
+      </Link>
     </div>
   );
 };

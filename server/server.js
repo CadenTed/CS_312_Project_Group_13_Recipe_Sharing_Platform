@@ -33,6 +33,12 @@ app.use(cors(corsOptions));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use(bodyParser.json());
 
+async function getRecipes()
+   {
+    const recipes = await db.query('SELECT name, description FROM "Recipes');
+    return recipes.rows;
+   }
+
 const recipes = [
   {
     name: "Cheese Burger",
@@ -105,7 +111,7 @@ app.post("/api/login", async (req, res) => {
             if (result.rows[0].password == password)
                {
                 loggedInUsername = userId;
-                loggedInUserId = result.rows[0].user_id;
+                loggedInUserId = result.rows[0].userId;
                 res.json({"success": true})
                }
             else
@@ -144,6 +150,46 @@ app.post("/api/signup", async (req, res) => {
          console.error('Error during signup:', err);
          res.status(500).send('Server Error');
         }
+});
+
+app.post("/api/savedRecipes", async (req, res) => {
+   try
+      {
+       const result = await db.query(`SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" LEFT JOIN "Users" ON "Recipes"."recipeId" = "Users"."saved_recipes" WHERE "Users"."userId" = ${loggedInUserId};`);
+       if (result.rowCount > 0)
+       {
+         res.json({"success": true, "recipes": result.rows});
+       }
+       else
+       {
+         res.json({"success": false, "recipes": null});
+       }
+      }
+   catch(err)
+      {
+       console.error('Error during load:', err);
+       res.status(500).send('Server Error');
+      }
+});
+
+app.post("/api/userRecipes", async (req, res) => {
+   try
+      {
+       const result = await db.query(`SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" WHERE "Recipes"."recipeUserId" = ${loggedInUserId};`);
+       if (result.rowCount > 0)
+       {
+         res.json({"success": true, "recipes": result.rows});
+       }
+       else
+       {
+         res.json({"success": false, "recipes": null});
+       }
+      }
+   catch(err)
+      {
+       console.error('Error during load:', err);
+       res.status(500).send('Server Error');
+      }
 });
 
 app.get("/api/recipes", (req, res) => {

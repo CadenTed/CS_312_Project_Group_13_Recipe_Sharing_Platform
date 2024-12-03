@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Header from "./components/Header";
 import MakeRecipe from "./components/MakeRecipe";
 import DisplayRecipe from "./components/DisplayRecipe";
+import Account from "./components/Account";
 
 function App() {
   
@@ -34,6 +35,7 @@ function App() {
           <Route path="/add-recipe" element={<MakeRecipe />} />
           <Route path="/display-recipe" element={<DisplayRecipe />} />
           <Route path="/logout"  element={() => { UserProfile.setName(""); return(<Login />);} }/>
+          <Route path="/account" element={<Account />}/>
         </Routes>
       </div>
     </Router>
