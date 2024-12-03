@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard";
 
-const RecipeGrid = () => {
+const RecipeGrid = ({searchText}) => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -14,11 +14,15 @@ const RecipeGrid = () => {
       .catch((err) => console.error("Error Fetching Recipes: ", err));
   }, []);
 
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div style={styles.gridContainer}>
       <div style={styles.grid}>
-        {recipes.length > 0 ? (
-          recipes.map((recipe, index) => (
+        {filteredRecipes.length > 0 ? (
+          filteredRecipes.map((recipe) => (
             <RecipeCard key={recipe.recipeId} recipe={recipe} />
           ))
         ) : (

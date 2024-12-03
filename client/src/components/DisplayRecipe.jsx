@@ -8,7 +8,6 @@ import Comments from "./Comments";
 
 function DisplayRecipe() {
   const [data, setData] = useState({});
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("/api/recipe-info", {
@@ -29,7 +28,6 @@ function DisplayRecipe() {
       })
       .catch((err) => {
         console.error("Error Fetching Recipe Info: ", err);
-        setError(err.message);
       });
   }, []);
 
