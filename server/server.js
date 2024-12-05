@@ -28,7 +28,10 @@ let loggedInUsername = "admin";
 
 const getLoggedInUserId = async () => {
   const result = await db.query('SELECT "userId" FROM "Users" WHERE "username" = $1', [loggedInUsername]);
-  return result.rows[0].userId;
+  if (result.rowCount > 0)
+      {
+       return result.rows[0].userId;
+      }
 }
 
 let loggedInUserId = getLoggedInUserId();
@@ -338,4 +341,3 @@ app.listen(port, () => {
 const setIdToDisplay = (id) => {
   idToDisplay = id;
 };
-
