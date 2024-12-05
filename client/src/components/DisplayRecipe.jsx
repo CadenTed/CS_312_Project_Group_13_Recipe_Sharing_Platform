@@ -36,7 +36,7 @@ function DisplayRecipe() {
       <CreatorInfo />
       <StarRating />
       <RecipeInfo info={data} />
-      <Comments comments={[data.comments, data.id]} />
+      <Comments info={data} />
     </div>
   );
 }

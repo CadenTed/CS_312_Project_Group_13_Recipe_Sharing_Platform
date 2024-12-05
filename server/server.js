@@ -272,9 +272,11 @@ app.get("/api/recipe-info", async (req, res) => {
   try {
     const commentResult = await db.query(`SELECT * FROM "Ratings" LEFT JOIN "Users" ON "Users".username = "Ratings".username WHERE "recipeId" = ${id}`);
     if (commentResult.rowCount > 0) {
+       console.log("Comments found: $1", commentResult.rows);
        comments = commentResult.rows;
     }
     else {
+       console.log("No comments found");
        comments = []
     }
    }
@@ -296,6 +298,7 @@ app.get("/api/recipe-info", async (req, res) => {
 
 app.post("/api/save", async (req, res) => {
    const { recipeId } = req.body;
+   console.log("Save recipe request: $1", recipeId);
    const result = await db.query(`UPDATE "Users" SET saved = ${recipeId} WHERE "userId" = ${loggedInUserId};`);
 });
 

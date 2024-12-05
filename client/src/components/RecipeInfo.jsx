@@ -3,11 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/RecipeInfo.css";
 
 function RecipeInfo({ info }) {
-  const { ingredients = [], steps = [], cookware = [], id } = info;
-  console.log("Info", info);
-  console.log("Ingredients", ingredients);
-  console.log("Steps", steps);
-  console.log("Cookware", cookware);
+  const { ingredients = [], steps = [], cookware = [], recipeId } = info;
 
   const [checkedSteps, setCheckedSteps] = useState(new Array(steps.length).fill(false));
 
@@ -24,24 +20,23 @@ function RecipeInfo({ info }) {
   };
 
   const onSaveRecipe = async () => {
-    console.log("Id", id);
     try {
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ recipeId }),
       }
-
-      const result = await fetch("api/save", options);
-
+    
+      const result = await fetch("/api/save", options);
+    /*
       if (!result.ok) {
         throw new Error("Failed to save Recipe");
       }
 
       const data = await result.json();
-      console.log(data);
+    */
     }
     catch (err) {
       console.error(err);
@@ -51,7 +46,6 @@ function RecipeInfo({ info }) {
   return (
     <fieldset>
       <legend>Recipe Information</legend>
-      <button onClick={saveRecipe}></button>
       <div className="container-fluid text-center w-100">
         <div className="row">
           <div className="col">
