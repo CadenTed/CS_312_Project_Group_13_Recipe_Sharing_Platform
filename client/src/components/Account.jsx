@@ -11,19 +11,23 @@ function Account() {
    const [savedRecipes, setSavedRecipes] = useState([]);
 
    const getUserRecipes = async () => {
-      const response = await fetch("http://localhost:5001/api/savedRecipes", {
+      const response = await fetch("http://localhost:5001/api/userRecipes", {
          method: "POST",
       });
-      setUserRecipes(await response.json());
-      console.log(userRecipes);
+      const result = await response.json();
+      console.log(result.recipes);
+      setUserRecipes(result);
+      
    }
 
    const getSavedRecipes = async () => {
       const response = await fetch("http://localhost:5001/api/savedRecipes", {
          method: "POST",
       });
-      setSavedRecipes(await response.json());
-      console.log("Saved", savedRecipes.recipes);
+      const result = await response.json();
+      console.log(result.recipes);
+      setSavedRecipes(result);
+      
    }
 
    useEffect(() => {

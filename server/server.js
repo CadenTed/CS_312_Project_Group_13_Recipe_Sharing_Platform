@@ -105,10 +105,7 @@ const recipeInfo = [
 ];
 
 app.post("/api/login", async (req, res) => {
-
      const { userId, password } = req.body;
-
-     console.log(`Request recieved: ${req.body}`);
      try 
        {
         const result = await db.query('SELECT * FROM "Users" WHERE username = $1', [userId]);
@@ -138,10 +135,8 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/signup", async (req, res) => {
-
      const { username, email, birthday, password } = req.body;
      const numUsers = (await db.query('SELECT * FROM "Users"')).rowCount
-     console.log("Signup request recieved");
 
      try 
         {
@@ -205,7 +200,6 @@ app.post("/api/userRecipes", async (req, res) => {
 app.get("/api/recipes", async (req, res) => {
   try {
     const recipes = await getRecipes();
-    console.log(recipes);
     res.json(recipes);
   }
   catch (err) {
@@ -215,14 +209,12 @@ app.get("/api/recipes", async (req, res) => {
 });
 
 app.post("/api/recipe-id", (req, res) => {
-  console.log("Recipe ID:", req.body);
   setIdToDisplay(req.body.recipeId);
 });
 
 app.get("/api/recipe-info", async (req, res) => {
   const id = idToDisplay
   let ingredients, cookware, steps, comments;
-  console.log(`Recipe ID: ${id}`);
 
   try {
     const ingredientsResults = await db.query(`SELECT * FROM "Ingredients" WHERE "recipeId" = ${id};`);
@@ -272,11 +264,9 @@ app.get("/api/recipe-info", async (req, res) => {
   try {
     const commentResult = await db.query(`SELECT * FROM "Ratings" LEFT JOIN "Users" ON "Users".username = "Ratings".username WHERE "recipeId" = ${id}`);
     if (commentResult.rowCount > 0) {
-       console.log("Comments found: $1", commentResult.rows);
        comments = commentResult.rows;
     }
     else {
-       console.log("No comments found");
        comments = []
     }
    }
@@ -298,7 +288,6 @@ app.get("/api/recipe-info", async (req, res) => {
 
 app.post("/api/save", async (req, res) => {
    const { recipeId } = req.body;
-   console.log("Save recipe request: $1", recipeId);
    const result = await db.query(`UPDATE "Users" SET saved = ${recipeId} WHERE "userId" = ${loggedInUserId};`);
 });
 
@@ -317,7 +306,6 @@ app.post("/api/addComment", async (req, res) => {
 });
 
 app.post("/api/getComments", async (req, res) => {
-   console.log(req.body);
    const { recipeId } = req.body;
    try
       {
