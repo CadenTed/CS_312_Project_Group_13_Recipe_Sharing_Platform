@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Popup from "reactjs-popup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/MakeRecipe.css";
 
@@ -34,6 +33,7 @@ function MakeRecipe() {
   }
 
   const onSubmit = async (event) => {
+    event.preventDefault();
     const recipeData = {
       name: name,
       description: description,
@@ -42,7 +42,7 @@ function MakeRecipe() {
       steps: stepsList
     }
     try {
-      const result = await fetch("/api/addRecipe", {
+      await fetch("/api/addRecipe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,15 +53,30 @@ function MakeRecipe() {
     catch (err) {
       console.error(err);
     }
+
+    // Clear inputs 
+    setName('');
+    setDescription('');
+    setIngredientList([]);
+    setCookwareList([]);
+    setStepsList([]);
+    setIngredient('');
+    setCookware('');
+    setSteps('');
     alert("Recipe Submitted!");
 
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Submitted");
   }
 
   return (
     <div>
       <h1>Add Recipe!</h1>
 
-      <form className="container">
+      <form className="container" onSubmit={handleSubmit}>
         <label htmlFor="name" className="title-label">
           Recipe Title
         </label>

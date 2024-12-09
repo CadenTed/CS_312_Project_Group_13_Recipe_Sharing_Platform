@@ -104,7 +104,7 @@ function RecipeInfo({ info }) {
                   {steps.length > 0 ? (
                     steps.map((step, index) => (
                       <tr key={index} onClick={() => {checkStep(index)}} style={{backgroundColor: !checkedSteps[index] ? "transparent" : "green"}}>
-                        <td>{step.stepNumber}</td>
+                        <td>{index + 1}</td>
                         <td>{step.description}</td>
                       </tr>
                     ))
