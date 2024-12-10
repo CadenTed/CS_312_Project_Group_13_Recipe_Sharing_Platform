@@ -20,10 +20,6 @@ function App() {
    {
     setIsLoggedIn(true);
    }
-  function handleLogout()
-   {
-    setIsLoggedIn(false);
-   }
 
   return (
     <Router>

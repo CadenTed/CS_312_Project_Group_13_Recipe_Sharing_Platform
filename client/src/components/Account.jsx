@@ -6,7 +6,6 @@ import "../styles/Account.css";
 function Account() {
    const [activeTab, setActiveTab] = useState("posted");
 
-   const [tab, setTab] = useState(false);
    const [userRecipes, setUserRecipes] = useState({success: false, recipes: []});
    const [savedRecipes, setSavedRecipes] = useState({success: false, recipes: []});
 
