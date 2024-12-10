@@ -11,7 +11,7 @@ function RecipeInfo({ info }) {
     if (steps.length !== checkedSteps.length) {
       setCheckedSteps(new Array(steps.length).fill(false));
     }
-  }, [steps]);
+  }, [steps, checkedSteps.length]);
 
   const checkStep = (index) => {
     const updatedCheckedSteps = [...checkedSteps];
@@ -29,7 +29,7 @@ function RecipeInfo({ info }) {
         body: JSON.stringify({ recipeId }),
       }
     
-      const result = await fetch("/api/save", options);
+      await fetch("/api/save", options);
     /*
       if (!result.ok) {
         throw new Error("Failed to save Recipe");

@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Comments({ info, refreshRecipeInfo }) {
@@ -78,8 +78,8 @@ function Comments({ info, refreshRecipeInfo }) {
          className="d-flex align-items-end justify-content-center"
          style={{ marginTop: "3vh" }}
        >
-         {info.comments ? (
-           info.comments.map((comment, index) => (
+         {comments ? (
+           comments.map((comment, index) => (
              <div
                key={index}
                style={{
