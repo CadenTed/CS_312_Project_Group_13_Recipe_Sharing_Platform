@@ -33,7 +33,7 @@ function Account() {
    useEffect(() => {
       getSavedRecipes();
       getUserRecipes();
-   }, []);
+   }, );
 
    const handleTabClick = (tab) => {
       setActiveTab(tab);
