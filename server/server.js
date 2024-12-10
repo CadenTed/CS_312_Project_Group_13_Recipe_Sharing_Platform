@@ -323,8 +323,8 @@ app.post("/api/addComment", async (req, res) => {
   const { commentContent, recipeId } = req.body;
   try {
     const result = await db.query(
-      'INSERT INTO "Ratings" ("recipeId", "userId", "comment", "ratingDate") VALUES ($1, $2, $3, $4);',
-      [recipeId, loggedInUserId, commentContent, new Date().toISOString()]
+      'INSERT INTO "Ratings" ("recipeId", "userId", "comment", "ratingDate", "username") VALUES ($1, $2, $3, $4, $5);',
+      [recipeId, loggedInUserId, commentContent, new Date().toISOString(), loggedInUsername]
     );
     res.json(result.rows);
   } catch (err) {
@@ -345,6 +345,24 @@ app.post("/api/getComments", async (req, res) => {
       res.json({ success: false, commentData: null });
     }
   } catch (err) {}
+});
+
+app.post("/api/deleteComment", async (req, res) => {
+   const { commentId } = req.body
+
+   try {
+      const result = await db.query('SELECT "ratingId", "userId" FROM "Ratings" WHERE "ratingId" = $1;', [commentId]);
+      console.log(result.rows);
+      if (result.rows[0].userId === loggedInUserId) {
+         await db.query('DELETE FROM "Ratings" WHERE "ratingId" = $1', [commentId]);
+         res.json({"success": true});
+      }
+      else {
+         res.json({"success": false});
+      }
+   } catch(err) {
+      res.json({"success": false});
+   }
 });
 
 app.listen(port, () => {
