@@ -47,65 +47,10 @@ app.use(bodyParser.json());
 
 async function getRecipes() {
   const recipes = await db.query(
-    'SELECT name, description, imagepath, "recipeId" FROM "Recipes"'
+    'SELECT name, description, imagepath, "recipeId" FROM "Recipes";'
   );
   return recipes.rows;
 }
-
-const recipes = [
-  {
-    name: "Cheese Burger",
-    description:
-      "A delicious cheeseburger with a juicy beef patty, melted cheese, lettuce, tomato, and pickles, served on a toasted bun.",
-    id: 0,
-    img: "http://localhost:5001/images/cheese-burger.png",
-  },
-  {
-    name: "Fried Salmon",
-    description:
-      "Crispy fried salmon with a side of mixed vegetables and seasoned rice.",
-    id: 1,
-    img: "http://localhost:5001/images/fried-salmon.png",
-  },
-];
-
-const recipeInfo = [
-  {
-    id: 0,
-    ingredients: [
-      "1/2 lb Ground Beef",
-      "1 Hamburger Bun",
-      "1 slice of Cheese",
-      "Lettuce",
-      "Tomato",
-      "Pickles",
-    ],
-    steps: [
-      "Form the beef into a patty",
-      "Season the patty with salt and pepper",
-      "Cook the patty on a grill or stovetop",
-      "Assemble the burger with your desired toppings",
-    ],
-    cookware: ["Grill", "Spatula"],
-  },
-  {
-    id: 1,
-    ingredients: [
-      "1 Salmon Fillet",
-      "1 cup of Mixed Vegetables",
-      "1 cup of Rice",
-      "Salt",
-      "Pepper",
-    ],
-    steps: [
-      "Season the salmon fillet with salt and pepper",
-      "Fry the salmon in a pan until crispy",
-      "Steam the mixed vegetables",
-      "Cook the rice",
-    ],
-    cookware: ["Pan", "Pot", "Steamer"],
-  },
-];
 
 app.post("/api/login", async (req, res) => {
   const { userId, password } = req.body;
@@ -173,7 +118,7 @@ app.post("/api/savedRecipes", async (req, res) => {
 app.post("/api/userRecipes", async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" WHERE "Recipes"."recipeUserId" = ${loggedInUserId};`
+      `SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" WHERE "Recipes"."userId" = ${loggedInUserId};`
     );
     if (result.rowCount > 0) {
       res.json({ success: true, recipes: result.rows });
@@ -221,7 +166,7 @@ app.get("/api/recipe-info", async (req, res) => {
 
   try {
     const cookwareResults = await db.query(
-      `SELECT * FROM "Cookware" WHERE recipeid = ${id};`
+      `SELECT * FROM "Cookware" WHERE "recipeId" = ${id};`
     );
 
     if (cookwareResults.rowCount > 0) {
@@ -278,30 +223,34 @@ app.post("/api/addRecipe", async (req, res) => {
   const currDate = generateDate();
 
   try {
+   const recipeId = (await db.query('SELECT * FROM "Recipes";')).rowCount + 1;
     const result = await db.query(
-      'INSERT INTO "Recipes" ("name", "description", "userId", "dateCreated") VALUES ($1, $2, $3, $4) RETURNING "recipeId";',
-      [name, description, loggedInUserId, currDate]
+      'INSERT INTO "Recipes" ("recipeId", "name", "description", "userId", "dateCreated") VALUES ($1, $2, $3, $4, $5) RETURNING "recipeId";',
+      [recipeId, name, description, loggedInUserId, currDate]
     );
-    const recipeId = result.rows[0].recipeId;
 
     for (const ingredient of ingredients) {
+      const ingredientId = (await db.query('SELECT * FROM "Ingredients";')).rowCount + 1;
       await db.query(
-        'INSERT INTO "Ingredients" ("recipeId", "name", "quantity") VALUES ($1, $2, $3);',
-        [recipeId, ingredient, ""]
+        'INSERT INTO "Ingredients" ("ingredientId", "recipeId", "name", "quantity") VALUES ($1, $2, $3, $4);',
+        [ingredientId, recipeId, ingredient, ""]
       );
     }
 
     for (const item of cookware) {
+      const cookwareId = (await db.query('SELECT * FROM "Cookware";')).rowCount + 1;
       await db.query(
-        'INSERT INTO "Cookware" ("recipeid", "name") VALUES ($1, $2);',
-        [recipeId, item]
+        'INSERT INTO "Cookware" ("id", "recipeId", "name") VALUES ($1, $2, $3);',
+        [cookwareId, recipeId, item]
       );
     }
 
-    for (const step of steps) {
+    for (let index = 0; index < steps.length; index++) {
+      let step = steps[index];
+      const instructionId = (await db.query('SELECT * FROM "Instructions";')).rowCount + 1;
       await db.query(
-        'INSERT INTO "Instructions" ("recipeId", "description", "stepNumber") VALUES ($1, $2, $3);',
-        [recipeId, step, 0]
+        'INSERT INTO "Instructions" ("instructionId", "recipeId", "description", "stepNumber") VALUES ($1, $2, $3, $4);',
+        [instructionId, recipeId, step, index]
       );
     }
 

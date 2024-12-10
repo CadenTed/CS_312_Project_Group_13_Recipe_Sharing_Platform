@@ -42,7 +42,7 @@ function MakeRecipe() {
       steps: stepsList
     }
     try {
-      await fetch("/api/addRecipe", {
+      await fetch("http://localhost:5001/api/addRecipe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
