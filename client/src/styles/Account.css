@@ -22,3 +22,11 @@
    justify-content: center;
    text-align: center;
  }
+
+ .grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 80%;
+  margin-bottom: 3em;
+}

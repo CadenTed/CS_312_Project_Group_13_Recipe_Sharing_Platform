@@ -118,7 +118,7 @@ app.post("/api/savedRecipes", async (req, res) => {
 app.post("/api/userRecipes", async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT "Recipes"."name", "Recipes"."description" FROM "Recipes" WHERE "Recipes"."userId" = ${loggedInUserId};`
+      `SELECT "Recipes"."name", "Recipes"."description", "Recipes"."recipeId", "Recipes"."imagepath" FROM "Recipes" LEFT JOIN "Users" ON "Recipes"."userId" = "Users"."userId" WHERE "Users"."userId" = ${loggedInUserId};`
     );
     if (result.rowCount > 0) {
       res.json({ success: true, recipes: result.rows });
