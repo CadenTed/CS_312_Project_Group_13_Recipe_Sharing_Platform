@@ -7,16 +7,17 @@ function Account() {
    const [activeTab, setActiveTab] = useState("posted");
 
    const [tab, setTab] = useState(false);
-   const [userRecipes, setUserRecipes] = useState([]);
-   const [savedRecipes, setSavedRecipes] = useState([]);
+   const [userRecipes, setUserRecipes] = useState({success: false, recipes: []});
+   const [savedRecipes, setSavedRecipes] = useState({success: false, recipes: []});
 
    const getUserRecipes = async () => {
       const response = await fetch("http://localhost:5001/api/userRecipes", {
          method: "POST",
       });
       const result = await response.json();
-      console.log(result.recipes);
+      console.log("Result", result.recipes);
       setUserRecipes(result);
+      console.log("User", userRecipes);
       
    }
 
@@ -65,20 +66,17 @@ function Account() {
             </div>
             <div className="tab-content">
                {activeTab === "posted" ? (
-                  <div style={styles.gridContainer}>
-                     <div style={styles.grid}>
-                     {userRecipes.length > 0 ? (
+                  <div className="grid-container">
+                     {userRecipes.recipes.length > 0 ? (
                         userRecipes.recipes.map((recipe) => (
                            <RecipeCard key={recipe.recipeId} recipe={recipe} />
                         ))
                      ) : (
                         <p>No Posted Recipes Available</p>
                      )}
-                     </div>
                   </div>
                ) : (
-                  <div style={styles.gridContainer}>
-                     <div style={styles.grid}>
+                  <div className="grid-container">
                      {savedRecipes.recipes.length > 0 ? (
                         savedRecipes.recipes.map((recipe) => (
                            <RecipeCard key={recipe.recipeId} recipe={recipe} />
@@ -86,7 +84,6 @@ function Account() {
                      ) : (
                         <p>No Saved Recipes Available</p>
                      )}
-                     </div>
                   </div>
                )}
             </div>
@@ -94,17 +91,5 @@ function Account() {
       </div>
    );
 };
-
-const styles = {
-   gridContainer: {
-     display: "flex",
-     justifyContent: "center",
-   },
-   grid: {
-     display: "grid",
-     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-     gap: "16px",
-   },
- };
 
 export default Account;
