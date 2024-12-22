@@ -2,7 +2,7 @@ import React from "react";
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import UserProfile from "./components/UserProfile";
@@ -13,13 +13,6 @@ import DisplayRecipe from "./components/DisplayRecipe";
 import Account from "./components/Account";
 
 function App() {
-  
-  let [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  function handleLogin()
-   {
-    setIsLoggedIn(true);
-   }
 
   return (
     <Router>
