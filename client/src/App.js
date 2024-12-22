@@ -26,7 +26,7 @@ function App() {
       <Header />
       <div className="App">
         <Routes>
-          <Route path="/" element={ !isLoggedIn ? <Login onLogin={handleLogin} /> : <Home />} />
+          <Route path="/" element={ <Home />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/add-recipe" element={<MakeRecipe />} />
           <Route path="/display-recipe" element={<DisplayRecipe />} />
